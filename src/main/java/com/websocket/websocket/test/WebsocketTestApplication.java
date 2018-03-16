@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.websocket.OnMessage;
 
 @Controller
 @EnableScheduling
@@ -38,6 +39,12 @@ public class WebsocketTestApplication {
 		return "index";
 	}
 
+
+	@GetMapping("/websocket")
+	public String websocket() {
+		return "websocket";
+	}
+
 	@MessageMapping("/send")
 	@SendTo("/topic/send")
 	public SocketMessage send(SocketMessage message) throws Exception {
@@ -50,6 +57,7 @@ public class WebsocketTestApplication {
 
 	@Scheduled(fixedRate = 1000)
 	@SendTo("/topic/callback")
+	@OnMessage
 	public Object callback() throws Exception {
 		// 发现消息s
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
